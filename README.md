@@ -25,4 +25,5 @@ Sistema de gerenciamento de coleção de jogos, com autenticação de usuário e
 - Relacionamento com Foreign Key entre jogos e categorias
 - Interface responsiva
 - Requisições assíncronas com `fetch`, sem recarregar a página
-
+ 
+O arquivo `database.sql` contém todos os comandos SQL executados no Supabase para criação das tabelas, relacionamentos, políticas e configurações do banco de dados.
