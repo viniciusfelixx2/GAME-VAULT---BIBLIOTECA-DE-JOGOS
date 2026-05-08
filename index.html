@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameVault | Biblioteca de jogos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/gamevault-icon.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-slate-950 text-white min-h-screen">
+  <div class="fixed inset-0 pointer-events-none overflow-hidden">
+    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-cyan-500/20 blur-3xl"></div>
+    <div class="absolute top-40 -right-32 w-96 h-96 rounded-full bg-fuchsia-500/20 blur-3xl"></div>
+    <div class="absolute bottom-0 left-1/2 w-96 h-96 rounded-full bg-emerald-500/10 blur-3xl"></div>
+  </div>
+
+  <header class="relative z-10 border-b border-white/10 bg-slate-950/70 backdrop-blur-xl sticky top-0">
+    <nav class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <img class="brand-logo" src="assets/gamevault-logo.png" alt="GameVault - sua biblioteca de jogos" />
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button id="logoutBtn" class="btn-danger hidden">Sair</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="relative z-10 max-w-7xl mx-auto px-4 py-8">
+    <section id="guestView" class="grid lg:grid-cols-2 gap-8 items-center min-h-[75vh]">
+      <div class="space-y-6">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/10 text-sm text-cyan-200">
+          🎮 Projeto dos alunos: Vinicius, Vitor, Genival e Matheus
+        </span>
+        <h2 class="text-4xl md:text-6xl font-black leading-tight">
+          Controle sua coleção de jogos em uma interface moderna.
+        </h2>
+        <p class="text-slate-300 text-lg max-w-xl">
+          Cadastre categorias, registre jogos, visualize, edite e exclua dados em tempo real usando a API REST do Supabase.
+        </p>
+        <div class="grid sm:grid-cols-3 gap-3 max-w-2xl">
+          <div class="feature-card">✅ Cadastro e login</div>
+          <div class="feature-card">✅ CRUD completo</div>
+          <div class="feature-card">✅ Tailwind CSS</div>
+        </div>
+      </div>
+
+      <div class="glass-card p-5 md:p-7">
+        <div class="flex rounded-2xl bg-white/5 p-1 mb-6 border border-white/10">
+          <button id="showLoginBtn" class="tab-btn active" type="button">Entrar</button>
+          <button id="showRegisterBtn" class="tab-btn" type="button">Cadastrar</button>
+        </div>
+
+        <form id="loginForm" class="space-y-4">
+          <div>
+            <label class="form-label">E-mail</label>
+            <input id="loginEmail" class="input" type="email" placeholder="seuemail@exemplo.com" required />
+          </div>
+          <div>
+            <label class="form-label">Senha</label>
+            <input id="loginPassword" class="input" type="password" placeholder="Sua senha" required />
+          </div>
+          <button class="btn-primary w-full" type="submit">Acessar área exclusiva</button>
+        </form>
+
+        <form id="registerForm" class="space-y-4 hidden">
+          <div>
+            <label class="form-label">Nome</label>
+            <input id="registerName" class="input" type="text" placeholder="Seu nome completo" required />
+          </div>
+          <div>
+            <label class="form-label">E-mail</label>
+            <input id="registerEmail" class="input" type="email" placeholder="seuemail@exemplo.com" required />
+          </div>
+          <div>
+            <label class="form-label">Senha</label>
+            <input id="registerPassword" class="input" type="password" minlength="6" placeholder="Mínimo 6 caracteres" required />
+          </div>
+          <button class="btn-primary w-full" type="submit">Criar conta</button>
+        </form>
+
+      </div>
+    </section>
+
+    <section id="appView" class="hidden space-y-8">
+      <div class="grid lg:grid-cols-[1.4fr_.8fr] gap-6 items-stretch">
+        <div class="glass-card p-6 md:p-8 overflow-hidden relative">
+          <div class="absolute right-0 top-0 w-64 h-64 bg-cyan-400/10 blur-3xl"></div>
+          <div class="relative">
+            <p id="welcomeText" class="text-cyan-200 mb-2"></p>
+            <h2 class="text-3xl md:text-5xl font-black">Painel da coleção</h2>
+            <p class="text-slate-300 mt-3 max-w-2xl">
+              Gerencie categorias e jogos cadastrados no Supabase. Todas as operações são feitas com fetch assíncrono via REST API.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div class="stat-card">
+            <p>Categorias</p>
+            <strong id="categoryCount">0</strong>
+          </div>
+          <div class="stat-card">
+            <p>Jogos</p>
+            <strong id="gameCount">0</strong>
+          </div>
+          <div class="stat-card col-span-2">
+            <p>Valor estimado</p>
+            <strong id="totalValue">R$ 0,00</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-6">
+        <section class="glass-card p-5 lg:col-span-1">
+          <div class="flex items-start justify-between gap-3 mb-5">
+            <div>
+              <h3 class="section-title">Categorias</h3>
+              <p class="section-subtitle">Crie gêneros, plataformas ou coleções.</p>
+            </div>
+          </div>
+
+          <form id="categoryForm" class="space-y-3 mb-5">
+            <input type="hidden" id="categoryId" />
+            <div>
+              <label class="form-label">Nome da categoria</label>
+              <input id="categoryName" class="input" placeholder="Ex: RPG, FPS, Indie" required />
+            </div>
+            <div>
+              <label class="form-label">Descrição</label>
+              <textarea id="categoryDescription" class="input min-h-[92px]" placeholder="Breve descrição"></textarea>
+            </div>
+            <div class="flex gap-2">
+              <button class="btn-primary flex-1" type="submit">Salvar</button>
+              <button id="cancelCategoryEdit" class="btn-secondary hidden" type="button">Cancelar</button>
+            </div>
+          </form>
+
+          <div id="categoryList" class="space-y-3"></div>
+        </section>
+
+        <section class="glass-card p-5 lg:col-span-2">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
+            <div>
+              <h3 class="section-title">Jogos</h3>
+              <p class="section-subtitle">Tabela principal com Foreign Key para categorias.</p>
+            </div>
+            <input id="searchInput" class="input md:max-w-xs" placeholder="Pesquisar jogo..." />
+          </div>
+
+          <form id="gameForm" class="grid md:grid-cols-2 gap-3 mb-6 p-4 rounded-3xl bg-white/5 border border-white/10">
+            <input type="hidden" id="gameId" />
+            <div>
+              <label class="form-label">Nome do jogo</label>
+              <input id="gameName" class="input" placeholder="Ex: Hollow Knight" required />
+            </div>
+            <div>
+              <label class="form-label">Categoria</label>
+              <select id="gameCategory" class="input" required></select>
+            </div>
+            <div>
+              <label class="form-label">Plataforma</label>
+              <input id="gamePlatform" class="input" placeholder="PC, PlayStation, Xbox..." required />
+            </div>
+            <div>
+              <label class="form-label">Preço</label>
+              <input id="gamePrice" class="input" type="number" min="0" step="0.01" placeholder="99.90" required />
+            </div>
+            <div>
+              <label class="form-label">Status</label>
+              <select id="gameStatus" class="input" required>
+                <option value="Quero jogar">Quero jogar</option>
+                <option value="Jogando">Jogando</option>
+                <option value="Finalizado">Finalizado</option>
+                <option value="Pausado">Pausado</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">Nota</label>
+              <input id="gameRating" class="input" type="number" min="0" max="10" step="0.1" placeholder="9.5" required />
+            </div>
+            <div class="md:col-span-2">
+              <label class="form-label">Descrição</label>
+              <textarea id="gameDescription" class="input min-h-[92px]" placeholder="Resumo, opinião ou observações"></textarea>
+            </div>
+            <div class="md:col-span-2 flex gap-2">
+              <button class="btn-primary flex-1" type="submit">Salvar jogo</button>
+              <button id="cancelGameEdit" class="btn-secondary hidden" type="button">Cancelar edição</button>
+            </div>
+          </form>
+
+          <div id="gameList" class="grid md:grid-cols-2 gap-4"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
